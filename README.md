@@ -18,7 +18,7 @@ external middlewares (cookie parser, bcrypt, jwt)
 [x] - Include resources (HTML & CSS, etc.)
 [x] - Arrange templates (without editing)
 [x] - Update config to match project requirements (port, db name)
-[] - Adapt User model and user service, auth middleware to project requirements
+[x] - Adapt User model and user service, auth middleware to project requirements
 [] - Implements register, login page actions, register, login ang logout actions
 [] - Create models for project-specific data
 [] - Create data services and middlewares for project-specific data

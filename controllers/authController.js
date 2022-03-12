@@ -9,7 +9,11 @@ router.get('/register', isGuest(), (req, res) => {
 router.post(
     '/register',
     isGuest(),
-    body('username').isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
+    // TODO change validations acording to requirements
+    body('username').isLength({ min: 3 }).withMessage('Username must be at least 3 characters long').bail()
+    .isAlphanumeric().withMessage('Username may contain only English letters and digits'),
+    body('password').isLength({ min: 3 }).withMessage('Password must be at least 3 characters long').bail()
+    .isAlphanumeric().withMessage('Password may contain only English letters and digits'),
     body('repeatPassword').custom((value, { req }) => {
         if (value != req.body.password) {
             throw new Error('Password don\'t match');
@@ -22,16 +26,17 @@ router.post(
 
         try {
             if (errors.length > 0) {
-                throw new Error('Validation error');
+                // TODO improve error messages
+                throw new Error(Object.values(errors).map(e => e.msg).join('\n'));
             }
 
             await req.auth.register(req.body.username, req.body.password);
 
             console.log(errors);
-            res.redirect('/');
+            res.redirect('/'); // TODO change redirect location
         } catch (err) {
             const ctx = {
-                errors,
+                errors: err.message.split('\n'),
                 userData: {
                     username: req.body.username
                 }

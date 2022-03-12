@@ -1,4 +1,4 @@
-# theater scaffold
+# Theater scaffold
 
 [] - Create folder structure
 [] - Initialize NPM project
@@ -13,7 +13,7 @@ external middlewares (cookie parser, bcrypt, jwt)
 [] - Create route guards
 [] - Create generic storage middleware
 
-# Application Requirements (BookingUni)
+# Application Requirements (Theater)
 
 [] - Include resources (HTML & CSS, etc.)
 [] - Arrange templates (without editing)

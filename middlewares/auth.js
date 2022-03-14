@@ -43,13 +43,17 @@ async function login(username, password) {
     const user = await userService.getUserByUsername(username);
 
     if (!user) {
-        throw new Error('No such user!');
+        const err = new Error('No such user!');
+        err.type = 'credential';
+        throw err;
     }
 
     const hasMatch = await bcrypt.compare(password, user.hashedPassword);
 
     if (!hasMatch) {
-        throw new Error('Incorect password!');
+        const err = new Error('Incorect password!');
+        err.type = 'credential';
+        throw err;
     }
 
     return generateToken(user);

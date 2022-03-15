@@ -1,4 +1,5 @@
 const { isUser } = require('../middlewares/guards.js');
+const { getAllPlays } = require('../services/play.js');
 const { parseError } = require('../util/parsers.js');
 
 const router = require('express').Router();
@@ -38,6 +39,30 @@ router.post('/create', isUser(), async (req, res) => {
             }
         };
         res.render('play/create', ctx);
+    }
+});
+
+router.get('/details/:id', async (req, res) => {
+    try {
+        const play = await req.storage.getPlayById(req.params.id);
+        play.hasUser = Boolean(req.user);
+        play.isAuthor = req.user && req.user._id == play.author;
+        play.liked = req.user && play.usersLiked.includes(req.user._id);
+
+        res.render('play/details', { play });
+    } catch (err) {
+        console.log(err.message);
+        res.redirect('/404');
+    }
+});
+
+router.get('/delete/:id', async (req, res) => {
+    try {
+        await req.storage.deletePlay(req.params.id)
+        res.redirect('/');
+    } catch (err) {
+        console.log(err.message);
+        res.redirect('/play/details' + req.params.id);
     }
 });
 

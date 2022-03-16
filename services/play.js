@@ -1,7 +1,11 @@
 const Play = require('../models/Play.js');
 
-async function getAllPlays() {
-    return Play.find({ public: true }).sort({ createdAt: -1 }).lean();
+async function getAllPlays(orderBy) {
+    let sorting = { createdAt: -1 };
+    if (orderBy == 'likes') {
+        sorting = { usersLiked: 'desc' };
+    }
+    return Play.find({ public: true }).sort(sorting).lean();
 }
 
 async function getPlayById(id) {
